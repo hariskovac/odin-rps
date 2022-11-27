@@ -1,3 +1,7 @@
+const playButton = document.querySelector("button");
+
+playButton.addEventListener("click", game);
+
 function computerPlay() {
   let opponentChoice = Math.floor(Math.random() * 3);
   if (opponentChoice === 1) {
