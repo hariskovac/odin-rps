@@ -1,6 +1,12 @@
-const playButton = document.querySelector("button");
+let pScore = 0;
+let cScore = 0;
+let winner = false;
 
-playButton.addEventListener("click", game);
+const buttons = document.querySelectorAll(".choiceButton");
+
+buttons.forEach(button => button.addEventListener("click", function(e) {
+  game(playRound(e.target.innerText, computerPlay()));
+}));
 
 function computerPlay() {
   let opponentChoice = Math.floor(Math.random() * 3);
@@ -29,28 +35,25 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function game() {
-  let score = 0;
-  for (let i = 0; i < 5; i++) {
-    const playerSelection = prompt("What do you choose, rock, paper, or scissors?", "");
-    const computerSelection = computerPlay();
-    const result = playRound(playerSelection, computerSelection);
-    if (result === "You win!") {
-      score++;
-      console.log("Player win!");
-    } else if (result === "You lose!") {
-      score--;
-      console.log("Computer win!")
-    } else {
-      console.log("Tie game!");
-    }
+function game(result) {
+  const resultDiv = document.querySelector("#result");
+    
+  if (result === "You win!" && winner === false) {
+    pScore++;
+    resultDiv.textContent = "You win the game! The score is " + pScore + " - " + cScore;
+  } else if (result === "You lose!" && winner === false) {
+    cScore++;
+    resultDiv.textContent = "Computer wins the game! The score is " + pScore + " - " + cScore;
+  } else if (winner === false) {
+    resultDiv.textContent = "Tie game! The score is " + pScore + " - " + cScore;
   }
-  
-  if (score > 0) {
-    console.log("You win the best of 5!");  
-  } else if (score < 0) {
-    console.log("The computer wins the best of 5!");
-  } else {
-    console.log("Tie series!");
+
+
+  if (pScore >= 5) {
+    resultDiv.textContent = "You win the series!";  
+    winner = true;
+  } else if (cScore >= 5) {
+    resultDiv.textContent = "The computer wins the series!";
+    winner = true;
   }
 }
